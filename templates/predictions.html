@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Surgery Predictions</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manage Today's Surgery Predictions</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Surgery Name</th>
+                <th>Predicted Tasks</th>
+                <th>Predicted Registrations</th>
+                <th>Predicted Documents</th>
+                <th>Predicted Referrals</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for surgery in surgeries %}
+            <tr>
+                <td>{{ surgery.SurgeryName }}</td>
+                <td>{{ predictions[surgery.SurgeryID]['PredictedTasks'] }}</td>
+                <td>{{ predictions[surgery.SurgeryID]['PredictedRegistrations'] }}</td>
+                <td>{{ predictions[surgery.SurgeryID]['PredictedDocuments'] }}</td>
+                <td>{{ predictions[surgery.SurgeryID]['PredictedReferrals'] }}</td>
+                <td>
+                    <form action="{{ url_for('update_prediction') }}" method="POST">
+                        <input type="hidden" name="surgery_id" value="{{ surgery.SurgeryID }}">
+                        <input type="number" name="predicted_tasks" value="{{ predictions[surgery.SurgeryID]['PredictedTasks'] }}" required>
+                        <input type="number" name="predicted_registrations" value="{{ predictions[surgery.SurgeryID]['PredictedRegistrations'] }}" required>
+                        <input type="number" name="predicted_documents" value="{{ predictions[surgery.SurgeryID]['PredictedDocuments'] }}" required>
+                        <input type="number" name="predicted_referrals" value="{{ predictions[surgery.SurgeryID]['PredictedReferrals'] }}" required>
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ url_for('index') }}">Back to Overview</a> |
+    <a href="{{ url_for('manage') }}">Go to Manage Page</a>
+</body>
+</html>

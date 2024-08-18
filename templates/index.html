@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surgery Stats Overview</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Surgery Stats Overview</h1>
+
+        <div class="section">
+            <h2>Today's Stats</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Surgery Name</th>
+                        <th>Tasks</th>
+                        <th>Registrations</th>
+                        <th>Documents</th>
+                        <th>Referrals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for surgery in surgeries %}
+                    <tr>
+                        <td>{{ surgery.SurgeryName }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['today']['Tasks'] }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['today']['Registrations'] }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['today']['Documents'] }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['today']['Referrals'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Predicted Stats</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Surgery Name</th>
+                        <th>Predicted Tasks</th>
+                        <th>Predicted Registrations</th>
+                        <th>Predicted Documents</th>
+                        <th>Predicted Referrals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for surgery in surgeries %}
+                    <tr>
+                        <td>{{ surgery.SurgeryName }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['prediction']['PredictedTasks'] }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['prediction']['PredictedRegistrations'] }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['prediction']['PredictedDocuments'] }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['prediction']['PredictedReferrals'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Yesterday's Stats</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Surgery Name</th>
+                        <th>Tasks</th>
+                        <th>Registrations</th>
+                        <th>Documents</th>
+                        <th>Referrals</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for surgery in surgeries %}
+                    <tr>
+                        <td>{{ surgery.SurgeryName }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['yesterday']['Tasks'] if stats[surgery.SurgeryID]['yesterday'] else 'N/A' }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['yesterday']['Registrations'] if stats[surgery.SurgeryID]['yesterday'] else 'N/A' }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['yesterday']['Documents'] if stats[surgery.SurgeryID]['yesterday'] else 'N/A' }}</td>
+                        <td>{{ stats[surgery.SurgeryID]['yesterday']['Referrals'] if stats[surgery.SurgeryID]['yesterday'] else 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <a href="{{ url_for('manage') }}">Go to Manage Page</a>
+    </div>
+</body>
+</html>

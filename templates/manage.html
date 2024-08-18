@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Surgery Stats and Predictions</title>
+    <!-- Link to the external CSS file -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Today's Surgery Stats</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Surgery Name</th>
+                    <th>Tasks</th>
+                    <th>Registrations</th>
+                    <th>Documents</th>
+                    <th>Referrals</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for surgery in surgeries %}
+                <tr>
+                    <td>{{ surgery.SurgeryName }}</td>
+                    <td>
+                        <form action="{{ url_for('update') }}" method="POST">
+                            <input type="hidden" name="surgery_id" value="{{ surgery.SurgeryID }}">
+                            <input type="number" name="tasks" value="{{ stats[surgery.SurgeryID]['today']['Tasks'] }}" required>
+                    </td>
+                    <td>
+                        <input type="number" name="registrations" value="{{ stats[surgery.SurgeryID]['today']['Registrations'] }}" required>
+                    </td>
+                    <td>
+                        <input type="number" name="documents" value="{{ stats[surgery.SurgeryID]['today']['Documents'] }}" required>
+                    </td>
+                    <td>
+                        <input type="number" name="referrals" value="{{ stats[surgery.SurgeryID]['today']['Referrals'] }}" required>
+                    </td>
+                    <td>
+                        <button type="submit">Update</button>
+                        </form>
+                        <a href="{{ url_for('total', surgery_id=surgery.SurgeryID) }}">Total to Date</a> |
+                        <a href="{{ url_for('period', surgery_id=surgery.SurgeryID) }}">Last 2 Weeks</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Manage Predictions</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Surgery Name</th>
+                    <th>Predicted Tasks</th>
+                    <th>Predicted Registrations</th>
+                    <th>Predicted Documents</th>
+                    <th>Predicted Referrals</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for surgery in surgeries %}
+                <tr>
+                    <td>{{ surgery.SurgeryName }}</td>
+                    <td>
+                        <form action="{{ url_for('update_prediction') }}" method="POST">
+                            <input type="hidden" name="surgery_id" value="{{ surgery.SurgeryID }}">
+                            <input type="number" name="predicted_tasks" value="{{ stats[surgery.SurgeryID]['prediction']['PredictedTasks'] }}" required>
+                    </td>
+                    <td>
+                        <input type="number" name="predicted_registrations" value="{{ stats[surgery.SurgeryID]['prediction']['PredictedRegistrations'] }}" required>
+                    </td>
+                    <td>
+                        <input type="number" name="predicted_documents" value="{{ stats[surgery.SurgeryID]['prediction']['PredictedDocuments'] }}" required>
+                    </td>
+                    <td>
+                        <input type="number" name="predicted_referrals" value="{{ stats[surgery.SurgeryID]['prediction']['PredictedReferrals'] }}" required>
+                    </td>
+                    <td>
+                        <button type="submit">Update Prediction</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ url_for('index') }}">Back to Overview</a>
+    </div>
+</body>
+</html>
